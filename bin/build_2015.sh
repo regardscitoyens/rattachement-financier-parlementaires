@@ -10,7 +10,7 @@ if [ -z "$CACHE" ]; then
 fi
 
 # TODO AN
-
+./bin/complete_an.py pdfs/1412-AN-rattachement-2015.csv > data/1412-AN-rattachement-2015.csv
 
 # PDF Sénat
 pdftohtml -xml pdfs/1412-Sénat-rattachement-2015.pdf > /dev/null

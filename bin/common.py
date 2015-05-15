@@ -47,6 +47,8 @@ def find_parl(nom, prenom, groupe, parls):
 
 def unif_partis(p):
     p = p.replace('et réalités', 'et Réalité')
+    p = p.replace('Front national', 'Front National')
+    p = p.replace('les Verts', 'Les Verts')
     p = p.replace('Ecologie', 'Écologie')
     p = p.replace("Indépendants de la France de métropole et d'Outre ", "Les Indépendants de la France métropolitaine et d'Outre-")
     p = p.replace('écologie les', 'Écologie Les')
@@ -59,6 +61,7 @@ def unif_partis(p):
     p = p.replace('PSLE-Nouveau', 'PSLE Nouveau')
     p = p.replace("Tavini Huiraatira no te ao ma'ohi (Front de libération de Polynésie)", "Front de libération de la Polynésie - Tavini Huiraatira no te ao ma'ohi")
     p = p.replace('radicaux centristes', 'radicaux, centristes')
+    p = p.replace('radicaux, centristes, indépendants et démocrates', 'Radicaux, Centristes, Indépendants et Démocrates')
     return p
 
 

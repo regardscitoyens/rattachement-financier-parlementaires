@@ -130,6 +130,10 @@ for line in (xml).split("\n"):
         record[3] = unif_partis(record[3])
         parl = find_parl(record[0], record[1], record[2], parls)
         if parl:
+            if record[3] == "Aucun rattachement":
+                record[3] = "Non rattaché"
+                if parl['sexe'] == 'F':
+                    record[3] += "e"
             record[4] = parl.get('sexe').encode('utf-8')
             record[5] = parl.get('nom_circo').encode('utf-8')
             record[6] = parl.get('slug').encode('utf-8')

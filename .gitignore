@@ -1,3 +1,4 @@
 pdfs/*.xml
 cache
 *.pyc
+sql

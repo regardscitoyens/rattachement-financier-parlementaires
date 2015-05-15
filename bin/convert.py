@@ -13,6 +13,7 @@ if len(sys.argv) > 2:
 
 filterallpages = False
 minl = 0
+minfont = 0
 if "-AN-" in filepath:
     typeparl = "depute"
     if "-2013" in filepath:
@@ -30,6 +31,7 @@ if "-AN-" in filepath:
 elif "-Sénat-" in filepath:
     typeparl = "senateur"
     lastp = "all"
+    l2 = 300
     if "-2013" in filepath:
         filterallpages = True
         mint = 155
@@ -39,7 +41,10 @@ elif "-Sénat-" in filepath:
     elif "-2014" in filepath:
         mint = 200
         maxt = 1100
-        l2 = 300
+    elif "-2015" in filepath:
+        minfont = 2
+        mint = 150
+        maxt = 1150
     l1 = 200
     l3 = 475
 with open("cache/%ss.json" % typeparl, 'r') as f:
@@ -78,6 +83,7 @@ def find_parl(nom, prenom, groupe):
     nom = checker(nom)
     nom = nom.replace("leborgn'", "le borgn'")
     nom = nom.replace("rihan-cypel", "rihan cypel")
+    nom = nom.replace(u"d’artagnan", u"de montesquiou")
     for parl in parls:
         if checker(parl['nom']) == "%s %s" % (prenom, nom) or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
             return parl
@@ -124,7 +130,12 @@ for line in (xml).split("\n"):
     attrs = re_line.search(line)
     if not attrs or not attrs.groups():
         raise Exception("WARNING : line detected with good font but wrong format %s" % line)
+    text = attrs.group(4).replace("&amp;", "&")
+    if not text.strip():
+        continue
     font = int(attrs.group(3))
+    if font < minfont:
+        continue
     top = int(attrs.group(1))
     if top > maxtop:
         maxtop = top
@@ -144,7 +155,6 @@ for line in (xml).split("\n"):
         continue
     if left < minl:
         continue
-    text = attrs.group(4).replace("&amp;", "&")
     if left < l1:
         record[0] = clean_part(clean(text))
     elif left < l2:

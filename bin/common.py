@@ -33,13 +33,14 @@ def find_parl(nom, prenom, groupe, parls):
     nom = nom.replace("leborgn'", "le borgn'")
     nom = nom.replace("rihan-cypel", "rihan cypel")
     nom = nom.replace(u"d’artagnan", u"de montesquiou")
+    nom = nom.replace(u"morel-a-lhuissier",  u"morel-a-l'huissier")
     for parl in parls:
         if checker(parl['nom']) == "%s %s" % (prenom, nom) or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
             return parl
         if (checker(parl['nom_de_famille']) == nom and parl['groupe_sigle'] == groupe) or (checker(parl['prenom']) == prenom and checker(parl['nom_de_famille']).startswith(nom)):
             res.append(parl)
     if not res:
-        sys.stderr.write("Could not find %s %s %s\n" % (typeparl, prenom, nom))
+        sys.stderr.write("Could not find %s %s\n" % (prenom, nom))
         return None
     if len(res) > 1:
         sys.stderr.write("Found too many %s %s : %s\n" % (prenom, nom, res))

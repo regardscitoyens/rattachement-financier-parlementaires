@@ -15,6 +15,7 @@ if len(sys.argv) > 2:
 
 filterallpages = False
 minl = 0
+modfont = None
 minfont = 0
 if "-AN-" in filepath:
     typeparl = "depute"

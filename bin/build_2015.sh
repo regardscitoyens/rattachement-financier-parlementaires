@@ -8,6 +8,7 @@ if [ -z "$CACHE" ]; then
 
   wget -q "http://www.assemblee-nationale.fr/14/tribun/xml/liste_rattachement_partis_2015.csv" -O pdfs/1412-AN-rattachement-2015.csv
   wget -q "http://www.senat.fr/fileadmin/Fichiers/Images/role/declarations_rattachement_parti_politique.pdf" -O pdfs/1412-Sénat-rattachement-2015.pdf
+#  wget -q "http://www.senat.fr/fileadmin/Fichiers/Images/role/declarations_rattachement_parti_politique_2015.pdf" -O pdfs/1412-Sénat-rattachement-2015.pdf
 fi
 
 # Complete CSV AN

@@ -47,6 +47,12 @@ elif "-Sénat-" in filepath:
         minfont = 2
         mint = 150
         maxt = 1150
+    elif "-2016" in filepath:
+        modfont = (5, -1)
+        minfont = 2
+        filterallpages = True
+        mint = 170
+        maxt = 1170
     l1 = 200
     l3 = 475
 
@@ -83,6 +89,8 @@ for line in (xml).split("\n"):
     if not text.strip():
         continue
     font = int(attrs.group(3))
+    if modfont:
+        font = (font + modfont[1]) % modfont[0]
     if font < minfont:
         continue
     top = int(attrs.group(1))

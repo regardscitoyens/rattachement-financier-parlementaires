@@ -34,6 +34,8 @@ def find_parl(nom, prenom, groupe, parls):
     nom = nom.replace("rihan-cypel", "rihan cypel")
     nom = nom.replace(u"d’artagnan", u"de montesquiou")
     nom = nom.replace(u"morel-a-lhuissier",  u"morel-a-l'huissier")
+    if nom == "vogel":
+        prenom = prenom.replace(u"jean-pierre",  u"jean pierre")
     for parl in parls:
         if checker(parl['nom']) == "%s %s" % (prenom, nom) or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
             return parl

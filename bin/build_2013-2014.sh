@@ -20,3 +20,24 @@ for pdffile in pdfs/*.pdf; do
   csvfile=$(echo $pdffile | sed 's/\.pdf$/.csv/' | sed 's#pdfs/#data/#')
   ./bin/convert.py "$xmlfile" > "$csvfile"
 done
+
+# ./bin/convert.sh 1 ; cat data/* | awk -F '","' '{print $4}' | count
+#echo "## Rattachement financier des députés à un parti politique pour 2014" > README.md
+#echo >> README.md
+#
+#echo "### Répartition des 577 députés par parti de rattachement :<br/>" >> README.md
+#cat rattachement-deputes-2014.csv |
+# grep -v ',"rattachement_parti'   |
+# awk -F '","' '{print $4}'        |
+# sed 's/"$//'                     |
+# sort | uniq -c >> README.md
+#echo >> README.md
+#
+#echo "### Répartition des députés des différents groupe politique par parti de rattachement :<br/>" >> README.md
+#cat rattachement-deputes-2014.csv |
+# grep -v ',"rattachement_parti'   |
+# awk -F '","' '{print $3" - "$4}' |
+# sed 's/"$//'                     |
+# sort | uniq -c >> README.md
+#echo >> README.md
+#

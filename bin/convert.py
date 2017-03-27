@@ -54,6 +54,11 @@ elif "-Sénat-" in filepath:
         filterallpages = True
         mint = 170
         maxt = 1170
+    elif "-2017" in filepath:
+        minfont = 3
+        filterallpages = True
+        mint = 160
+        maxt = 1170
     l1 = 200
     l3 = 475
 
@@ -128,7 +133,7 @@ for line in (xml).split("\n"):
             record[3] = a[1]
         else:
             record[2] = clean(text)
-        record[2] = clean_app(record[2]).replace("Rassemblement-", "R").replace("ÉCOL.", 'ECOLO').replace('Ecolo', 'ECOLO')
+        record[2] = clean_app(record[2]).replace("Rassemblement-", "R").replace("ÉCOL.", 'ECOLO').replace('Ecolo', 'ECOLO').replace("Parti communiste", "Parti Communiste").replace("Parti socialiste", "Parti Socialiste")
     else:
         record[3] = clean(text)
     if record[3]:

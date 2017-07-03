@@ -26,7 +26,7 @@ def clean_accents(t):
 
 checker = lambda x: clean(clean_accents(x)).lower().strip()
 
-def find_parl(nom, prenom, groupe, parls):
+def find_parl(nom, prenom, groupe, parls, circo=None):
     res = []
     prenom = checker(prenom)
     nom = checker(nom)
@@ -37,12 +37,21 @@ def find_parl(nom, prenom, groupe, parls):
     if nom == "vogel":
         prenom = prenom.replace(u"jean-pierre",  u"jean pierre")
     for parl in parls:
+        if circo:
+            try:
+                parlcirco = "%03d%02d" % (int(parl['num_deptmt']), int(parl['num_circo']))
+            except:
+                parlcirco = "%s%02d" % (parl['num_deptmt'].upper(), int(parl['num_circo']))
+            if circo != parlcirco:
+                continue
         if checker(parl['nom']) == "%s %s" % (prenom, nom) or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
             return parl
-        if (checker(parl['nom_de_famille']) == nom and parl['groupe_sigle'] == groupe) or (checker(parl['prenom']) == prenom and checker(parl['nom_de_famille']).startswith(nom)):
+        if (groupe and checker(parl['nom_de_famille']) == nom and parl['groupe_sigle'] == groupe) \
+          or (checker(parl['prenom']) == prenom and checker(parl['nom_de_famille']).startswith(nom)):
             res.append(parl)
     if not res:
-        sys.stderr.write("Could not find %s %s\n" % (prenom, nom))
+        if not circo:
+            sys.stderr.write("Could not find %s %s\n" % (prenom, nom))
         return None
     if len(res) > 1:
         sys.stderr.write("Found too many %s %s : %s\n" % (prenom, nom, res))

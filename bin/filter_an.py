@@ -80,5 +80,6 @@ for i in results:
         i[j] = clean(i[j])
         try: i[j] = i[j].encode('utf-8')
         except: pass
+for i in sorted(results, key=lambda x: x[0]):
     print ",".join([str(i[a]) if isinstance(i[a], int) else "\"%s\"" % i[a].replace('"', '""') for a,_ in enumerate(i)])
 

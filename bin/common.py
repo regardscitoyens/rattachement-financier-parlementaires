@@ -82,4 +82,7 @@ def unif_partis(p):
     p = p.replace('Les Républicains Union pour un Mouvement Populaire)', 'Les Républicains (Union pour un Mouvement Populaire)')
     return p
 
+re_word_to_lower = re.compile(ur"(^| |')([A-ZÉ])([A-ZÉ]+)")
+def lowerize(s):
+    return re_word_to_lower.sub(lambda x: x.group(1) + x.group(2) + x.group(3).lower(), s.decode("utf-8")).encode("utf-8")
 

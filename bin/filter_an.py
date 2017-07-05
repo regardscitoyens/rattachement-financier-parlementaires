@@ -3,7 +3,7 @@
 
 import sys, re, csv, json
 sys.path.append('bin')
-from common import clean, find_parl, unif_partis, checker
+from common import clean, find_parl, unif_partis, checker, lowerize
 from pprint import pprint
 
 filepath = sys.argv[1]
@@ -50,7 +50,7 @@ for circo, candidats in circos.items():
       line['Nom candidat'],
       line['Prénom candidat'],
       parl['groupe_sigle'],
-      unif_partis(line['Parti rattachement']),
+      unif_partis(lowerize(line['Parti rattachement'])),
       parl['sexe'],
       parl['nom_circo'],
       parl['slug'],

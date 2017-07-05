@@ -59,6 +59,20 @@ for circo, candidats in circos.items():
       parl['slug'],
       parl['url_an']
     ])
+    del(circosparls[circo])
+
+for circo, parls in circosparls.items():
+    parl = parls[0]
+    results.append([
+      parl['nom_de_famille'].upper(),
+      parl['prenom'],
+      parl['groupe_sigle'],
+      "Non rattaché%s" % ("e" if parl["sexe"] == "F" else ""),
+      parl['sexe'],
+      parl['nom_circo'],
+      parl['slug'],
+      parl['url_an']
+    ])
 
 print ",".join(['"%s"' % h for h in headers])
 for i in results:

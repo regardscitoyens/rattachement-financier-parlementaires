@@ -45,7 +45,10 @@ for circo, candidats in circos.items():
         print >> sys.stderr, "WARNING: could not find député", ["%s | %s" % (checker(p["nom"]), p["groupe_sigle"]) for p in circosparls[circo]], "for circo", circo
         pprint(["%s | %s" % (checker("%s %s" % (p['Prénom candidat'], p['Nom candidat'])), p['Parti rattachement'].decode("utf-8")) for p in candidats], stream=sys.stderr)
         print >> sys.stderr
-        continue
+        parl = circosparls[circo][0]
+        line['Nom candidat'] = parl["nom_de_famille"].upper()
+        line['Prénom candidat'] = parl["prenom"]
+        line['Parti rattachement'] = "Non rattaché%s" % ("e" if parl["sexe"] == "F" else "")
     results.append([
       line['Nom candidat'],
       line['Prénom candidat'],

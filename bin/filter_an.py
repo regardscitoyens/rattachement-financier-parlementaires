@@ -3,7 +3,8 @@
 
 import sys, re, csv, json
 sys.path.append('bin')
-from common import clean, find_parl, unif_partis
+from common import clean, find_parl, unif_partis, checker
+from pprint import pprint
 
 filepath = sys.argv[1]
 with open(filepath, 'r') as csv_file:
@@ -23,16 +24,26 @@ for line in csv:
         circos[circo] = []
     circos[circo].append(line)
 
+circosparls = {}
+for parl in parls:
+    try:
+        circo = "%03d%02d" % (int(parl['num_deptmt']), int(parl['num_circo']))
+    except:
+        circo = "%s%02d" % (parl['num_deptmt'].upper(), int(parl['num_circo']))
+    if circo not in circosparls:
+        circosparls[circo] = []
+    circosparls[circo].append(parl)
+
 for circo, candidats in circos.items():
     parl = None
     for line in candidats:
-        parl = find_parl(line['Nom candidat'], line['Prénom candidat'], None, parls, circo)
+        parl = find_parl(line['Nom candidat'], line['Prénom candidat'], None, circosparls[circo], silent=True)
         if parl:
             break
 
     if not parl:
-        print >> sys.stderr, "WARNING: could not find député for circo %s" % circo
-        print >> sys.stderr, candidats
+        print >> sys.stderr, "WARNING: could not find député", ["%s | %s" % (checker(p["nom"]), p["groupe_sigle"]) for p in circosparls[circo]], "for circo", circo
+        pprint(["%s | %s" % (checker("%s %s" % (p['Prénom candidat'], p['Nom candidat'])), p['Parti rattachement'].decode("utf-8")) for p in candidats], stream=sys.stderr)
         print >> sys.stderr
         continue
     results.append([

@@ -12,7 +12,7 @@ regexps = [(re.compile(r), s) for r, s in [
     (u'[àÀ]', 'a'),
     (u'[éÉèÈêÊëË]', 'e'),
     (u'[îÎïÏ[]', 'i'),
-    (u'[ôÔöÔ]', 'o'),
+    (u'[ôÔÖöÔ]', 'o'),
     (u'[ùÙûÛüÜ]', 'u'),
     (u'[çÇ]', 'c'),
 ]]
@@ -26,35 +26,40 @@ def clean_accents(t):
 
 checker = lambda x: clean(clean_accents(x)).lower().strip()
 
-def find_parl(nom, prenom, groupe, parls, circo=None):
+def find_parl(nom, prenom, groupe, parls, silent=False):
     res = []
     prenom = checker(prenom)
     nom = checker(nom)
-    nom = nom.replace("leborgn'", "le borgn'")
-    nom = nom.replace("rihan-cypel", "rihan cypel")
+    nom = nom.replace(u"leborgn'", u"le borgn'")
+    nom = nom.replace(u"rihan-cypel", u"rihan cypel")
     nom = nom.replace(u"d’artagnan", u"de montesquiou")
     nom = nom.replace(u"morel-a-lhuissier",  u"morel-a-l'huissier")
     if nom == "vogel":
         prenom = prenom.replace(u"jean-pierre",  u"jean pierre")
+    nom_complet = "%s %s" % (prenom, nom)
+    nom_complet = nom_complet.replace(u"jean-baptiste djebbari-bonnet", u"jean-baptiste djebbari")
+    nom_complet = nom_complet.replace(u"philippe-michel kleisbauer", u"philippe michel-kleisbauer")
+    nom_complet = nom_complet.replace(u"mostapha laabid", u"mustapha laabid")
+    nom_complet = nom_complet.replace(u"liliane tanguy", u"liliana tanguy")
+    nom_complet = nom_complet.replace(u"moeta brotherson", u"moetai brotherson")
+    nom_complet = nom_complet.replace(u"jean hugues ratenon", u"jean-hugues ratenon")
+    nom_complet = nom_complet.replace(u"amal amelia lakrafi", u"amal-amelia lakrafi")
+    nom_complet = nom_complet.replace(u"nicole gries-trisse", u"nicole trisse")
+    nom_complet = nom_complet.replace(u"claire javois", u"claire guion-firmin")
+    nom_complet = nom_complet.replace(u"anne laure cattelot", u"anne-laure cattelot")
+    nom_complet = nom_complet.replace(u"pierre morel a l'huissier", u"pierre morel-a-l'huissier")
     for parl in parls:
-        if circo:
-            try:
-                parlcirco = "%03d%02d" % (int(parl['num_deptmt']), int(parl['num_circo']))
-            except:
-                parlcirco = "%s%02d" % (parl['num_deptmt'].upper(), int(parl['num_circo']))
-            if circo != parlcirco:
-                continue
-        if checker(parl['nom']) == "%s %s" % (prenom, nom) or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
+        if checker(parl['nom']) == nom_complet or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
             return parl
         if (groupe and checker(parl['nom_de_famille']) == nom and parl['groupe_sigle'] == groupe) \
           or (checker(parl['prenom']) == prenom and checker(parl['nom_de_famille']).startswith(nom)):
             res.append(parl)
     if not res:
-        if not circo:
-            sys.stderr.write("Could not find %s %s\n" % (prenom, nom))
+        if not silent:
+            sys.stderr.write("Could not find %s\n" % nom_complet)
         return None
     if len(res) > 1:
-        sys.stderr.write("Found too many %s %s : %s\n" % (prenom, nom, res))
+        sys.stderr.write("Found too many %s : %s\n" % (nom_complet, res))
     return res[0]
 
 def unif_partis(p):

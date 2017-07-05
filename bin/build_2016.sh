@@ -2,7 +2,7 @@
 
 CACHE=$1
 if [ -z "$CACHE" ]; then
-  wget -q "http://www.nosdeputes.fr/deputes/json" -O cache/deputes.json
+  wget -q "http://2012-2017.nosdeputes.fr/deputes/json" -O cache/deputes.json
   wget -q "http://www.nossenateurs.fr/senateurs/json" -O cache/senateurs.json
   wget -q "http://www.assemblee-nationale.fr/qui/Rattachement_partis_2016.pdf" -O pdfs/1512-AN-rattachement-2016.pdf
   echo "Nom;Prénom;Groupe;Parti ou groupement politique" | iconv -t ISO88591 > pdfs/1512-AN-rattachement-2016.csv

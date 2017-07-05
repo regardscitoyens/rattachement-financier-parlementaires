@@ -4,7 +4,7 @@ CACHE=$1
 mkdir -p pdfs pdfmaps cache data
 
 if [ -z "$CACHE" ]; then
-  wget -q "http://www.nosdeputes.fr/deputes/json" -O cache/deputes.json
+  wget -q "http://2012-2017.nosdeputes.fr/deputes/json" -O cache/deputes.json
   wget -q "http://www.assemblee-nationale.fr/qui/Rattachement_partis.pdf" -O pdfs/1212-AN-rattachement-2013.pdf
   wget -q "http://www.assemblee-nationale.fr/qui/Rattachement_partis_2014.pdf" -O pdfs/1312-AN-rattachement-2014.pdf
   wget -q "http://www.nossenateurs.fr/senateurs/json" -O cache/senateurs.json

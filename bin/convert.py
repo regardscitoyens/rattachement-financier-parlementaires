@@ -59,6 +59,10 @@ elif "-Sénat-" in filepath:
         filterallpages = True
         mint = 160
         maxt = 1170
+    elif "-2018" in filepath:
+        minfont = 2
+        mint = 220
+        maxt = 1150
     l1 = 200
     l3 = 475
 
@@ -118,24 +122,35 @@ for line in (xml).split("\n"):
         continue
     if left < minl:
         continue
+    rabtext = None
+    if "-2018" in filepath and "  " in text:
+        text, rabtext = tuple(text.split("  "))
     if left < l1:
-        record[0] = clean_part(clean(text))
+        record[0] += " " + clean_part(clean(text))
+        if rabtext:
+            record[1] += " " + clean(rabtext)
     elif left < l2:
-        record[1] = clean(text)
+        record[1] += " " + clean(text)
         match = re_gpe.search(record[1])
         if match:
             record[1] = re_gpe.sub('', record[1]).strip()
             record[2] = match.group(1).strip()
+        elif rabtext:
+            record[2] += " " + clean(rabtext)
     elif left < l3:
         if "<b>" in text:
             a = text.split(' <b>')
             record[2] = a[0]
             record[3] = a[1]
         else:
-            record[2] = clean(text)
+            record[2] += " " + clean(text)
+            if rabtext:
+                record[3] += " " + clean(rabtext)
         record[2] = clean_app(record[2]).replace("Rassemblement-", "R").replace("ÉCOL.", 'ECOLO').replace('Ecolo', 'ECOLO').replace("Parti communiste", "Parti Communiste").replace("Parti socialiste", "Parti Socialiste")
     else:
-        record[3] = clean(text)
+        record[3] += " " + clean(text)
+    for i,_ in enumerate(record):
+        record[i] = record[i].strip().replace("- ", "-").replace(" Ÿ", "Y")
     if record[3]:
         if not "".join(record[:2]):
             tmp = clean(record[3])

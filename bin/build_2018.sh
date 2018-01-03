@@ -18,18 +18,18 @@ if [ -z "$CACHE" ]; then
     sed -r 's/^([^;]+);([^;]+);M[\.me]+ (.*) \1;(.*);$/\1;\3;\4;\2/'    |
     grep '[a-z]'                                                        |
     iconv -t ISO88591 >> pdfs/1712-AN-rattachement-2018.csv
-  #wget -q "http://www.senat.fr/fileadmin/Fichiers/Images/sgp/Rattachements_partis_pol/Liste_rattachements_pour_2018.pdf" -O pdfs/1712-Sénat-rattachement-2018.pdf
+  wget -q "http://www.senat.fr/fileadmin/Fichiers/Images/sgp/Rattachements_partis_pol/Liste_rattachements_pour_2018.pdf" -O pdfs/1712-Sénat-rattachement-2018.pdf
 fi
 
 # Complete CSV AN
 bin/complete_an.py pdfs/1712-AN-rattachement-2018.csv > data/1712-AN-rattachement-2018.csv
 
 # PDF Sénat
-#pdftohtml -xml pdfs/1712-Sénat-rattachement-2018.pdf > /dev/null
-#bin/convert.py pdfs/1712-Sénat-rattachement-2018.xml 1
-#bin/convert.py pdfs/1712-Sénat-rattachement-2018.xml > data/1712-Sénat-rattachement-2018.csv
+pdftohtml -xml pdfs/1712-Sénat-rattachement-2018.pdf > /dev/null
+bin/convert.py pdfs/1712-Sénat-rattachement-2018.xml 1
+bin/convert.py pdfs/1712-Sénat-rattachement-2018.xml > data/1712-Sénat-rattachement-2018.csv
 
 # Build SQLs for ND/NS
 bin/build_sql.sh data/1712-AN-rattachement-2018.csv
-#bin/build_sql.sh data/1712-Sénat-rattachement-2018.csv
+bin/build_sql.sh data/1712-Sénat-rattachement-2018.csv
 

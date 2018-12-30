@@ -34,7 +34,9 @@ if "-AN-" in filepath:
 elif "-Sénat-" in filepath:
     typeparl = "senateur"
     lastp = "all"
+    l1 = 200
     l2 = 300
+    l3 = 475
     if "-2013" in filepath:
         filterallpages = True
         mint = 155
@@ -63,8 +65,10 @@ elif "-Sénat-" in filepath:
         minfont = 2
         mint = 220
         maxt = 1150
-    l1 = 200
-    l3 = 475
+    elif "-2019" in filepath:
+        minfont = 2
+        mint = 100
+        maxt = 1130
 
 with open("cache/%ss.json" % typeparl, 'r') as f:
     parls = [p[typeparl] for p in json.load(f)['%ss' % typeparl]]
@@ -123,7 +127,7 @@ for line in (xml).split("\n"):
     if left < minl:
         continue
     rabtext = None
-    if "-2018" in filepath and "  " in text:
+    if ("-2018" in filepath or "-2019" in filepath) and "  " in text:
         text, rabtext = tuple(text.split("  "))
     if left < l1:
         record[0] += " " + clean_part(clean(text))

@@ -18,15 +18,18 @@ with open("cache/deputes.json") as f:
 
 for line in csv:
     for k in line:
-        line[k] = line[k].decode('iso-8859-15').encode('utf-8')
+        line[k] = (line[k] or "").decode('iso-8859-15').encode('utf-8')
     groupe = line["Groupe"].replace("app.", "").replace("Écolo", "ECOLO")
-    parl = find_parl(line['Nom'], line['Pr\xe9nom'], groupe, parls)
+    parl = find_parl(line['Nom'], line.get('Pr\xe9nom', ''), groupe, parls)
     if not parl:
         print >> sys.stderr, "WARNING: could not process", line
         continue
+    if "-2019" in filepath and not line['Parti ou groupement politique']:
+        line['Parti ou groupement politique'] = line['Groupe']
+        line['Groupe'] = ""
     results.append([
       line['Nom'],
-      line['Pr\xe9nom'],
+      line.get('Pr\xe9nom', parl['prenom']),
       line['Groupe'],
       unif_partis(line['Parti ou groupement politique']),
       parl['sexe'],

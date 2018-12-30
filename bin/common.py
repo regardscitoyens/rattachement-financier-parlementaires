@@ -26,17 +26,19 @@ def clean_accents(t):
 
 checker = lambda x: clean(clean_accents(x)).lower().strip()
 
+re_mme = re.compile(r'^M(me|\.)\s+', re.I)
 def find_parl(nom, prenom, groupe, parls, silent=False):
     res = []
     prenom = checker(prenom)
     nom = checker(nom)
+    nom = re_mme.sub('', nom)
     nom = nom.replace(u"leborgn'", u"le borgn'")
     nom = nom.replace(u"rihan-cypel", u"rihan cypel")
     nom = nom.replace(u"d’artagnan", u"de montesquiou")
     nom = nom.replace(u"morel-a-lhuissier",  u"morel-a-l'huissier")
     if nom == "vogel":
         prenom = prenom.replace(u"jean-pierre",  u"jean pierre")
-    nom_complet = "%s %s" % (prenom, nom)
+    nom_complet = ("%s %s" % (prenom, nom)).strip()
     nom_complet = nom_complet.replace(u"jean-baptiste djebbari-bonnet", u"jean-baptiste djebbari")
     nom_complet = nom_complet.replace(u"philippe-michel kleisbauer", u"philippe michel-kleisbauer")
     nom_complet = nom_complet.replace(u"mostapha laabid", u"mustapha laabid")
@@ -71,7 +73,11 @@ def unif_partis(p):
     p = p.replace('écologie les', 'Écologie Les')
     for w in ['Français', 'Huiraatira', 'Réunion', 'Mouvement', 'Populaire', 'Indépendantiste', 'Martiniquais' ,'Ensemble', 'République', 'Unie', 'Socialisme', 'Outre-mer', 'Réalité']:
         p = p.replace(w.lower(), w)
+    p = p.replace('Mouvement démocrate', 'Mouvement Démocrate')
+    p = p.replace('France insoumise', 'France Insoumise')
+    p = p.replace('La République en marche', 'En marche !')
     p = p.replace('Non déclaré', 'Non rattaché')
+    p = p.replace('Non rattaché(s)', 'Non rattaché')
     p = p.replace('Aucun parti', 'Non rattaché')
     p = p.replace(' (URCID)', '')
     p = p.replace('Union de la majorité municipale', 'La politique autrement (Union de la majorité municipale)') if p.startswith('Union') else p

@@ -69,6 +69,10 @@ elif "-Sénat-" in filepath:
         minfont = 2
         mint = 100
         maxt = 1130
+    elif "-2020" in filepath:
+        minfont = 2
+        mint = 90
+        maxt = 1150
 
 with open("cache/%ss.json" % typeparl, 'r') as f:
     parls = [p[typeparl] for p in json.load(f)['%ss' % typeparl]]
@@ -161,7 +165,7 @@ for line in (xml).split("\n"):
             record = results.pop()
             record[3] = "%s %s" % (clean(record[3]), tmp)
         record[3] = unif_partis(record[3])
-        parl = find_parl(record[0], record[1], record[2], parls)
+        parl = find_parl(record[0], record[1], record[2], parls, senat="-Sénat-" in filepath)
         if parl:
             if record[3] == "Aucun rattachement":
                 record[3] = "Non rattaché"

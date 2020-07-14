@@ -27,11 +27,13 @@ def clean_accents(t):
 checker = lambda x: clean(clean_accents(x)).lower().strip()
 
 re_mme = re.compile(r'^M(me|\.)\s+', re.I)
-def find_parl(nom, prenom, groupe, parls, silent=False):
+def find_parl(nom, prenom, groupe, parls, silent=False, senat=False):
     res = []
     prenom = checker(prenom)
     nom = checker(nom)
     nom = re_mme.sub('', nom)
+    if senat and not prenom:
+        nom, prenom = nom.split(" ", 1)
     nom = nom.replace(u"leborgn'", u"le borgn'")
     nom = nom.replace(u"rihan-cypel", u"rihan cypel")
     nom = nom.replace(u"d’artagnan", u"de montesquiou")
@@ -50,15 +52,16 @@ def find_parl(nom, prenom, groupe, parls, silent=False):
     nom_complet = nom_complet.replace(u"claire javois", u"claire guion-firmin")
     nom_complet = nom_complet.replace(u"anne laure cattelot", u"anne-laure cattelot")
     nom_complet = nom_complet.replace(u"pierre morel a l'huissier", u"pierre morel-a-l'huissier")
+    nom_complet = nom_complet.replace(u"soilihi thani mohamed", u"thani mohamed soilihi")
     for parl in parls:
-        if checker(parl['nom']) == nom_complet or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom):
+        if checker(parl['nom']) == nom_complet or (checker(parl['nom_de_famille']) == nom and checker(parl['prenom']) == prenom) or checker(parl['slug']) == "%s-%s" % (prenom, nom):
             return parl
         if (groupe and checker(parl['nom_de_famille']) == nom and parl['groupe_sigle'] == groupe) \
           or (checker(parl['prenom']) == prenom and checker(parl['nom_de_famille']).startswith(nom)):
             res.append(parl)
     if not res:
         if not silent:
-            sys.stderr.write("Could not find %s\n" % nom_complet)
+            sys.stderr.write("Could not find %s (%s / %s)\n" % (nom_complet, prenom, nom))
         return None
     if len(res) > 1:
         sys.stderr.write("Found too many %s : %s\n" % (nom_complet, res))
@@ -67,7 +70,9 @@ def find_parl(nom, prenom, groupe, parls, silent=False):
 def unif_partis(p):
     p = p.replace('et réalités', 'et Réalité')
     p = p.replace('Front national', 'Front National')
+    p = p.replace('Rassemblement national', 'Rassemblement National')
     p = p.replace('les Verts', 'Les Verts')
+    p = p.replace('écologie', 'Écologie')
     p = p.replace('Ecologie', 'Écologie')
     p = p.replace("Indépendants de la France de métropole et d'Outre ", "Les Indépendants de la France métropolitaine et d'Outre-")
     p = p.replace('écologie les', 'Écologie Les')
@@ -76,6 +81,7 @@ def unif_partis(p):
     p = p.replace('Mouvement démocrate', 'Mouvement Démocrate')
     p = p.replace('France insoumise', 'France Insoumise')
     p = p.replace('La République en marche', 'En marche !')
+    p = p.replace('La République en Marche', 'En marche !')
     p = p.replace('Non déclaré', 'Non rattaché')
     p = p.replace('Non rattaché(s)', 'Non rattaché')
     p = p.replace('Aucun parti', 'Non rattaché')

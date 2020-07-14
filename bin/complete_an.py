@@ -24,7 +24,7 @@ for line in csv:
     if not parl:
         print >> sys.stderr, "WARNING: could not process", line
         continue
-    if "-2019" in filepath and not line['Parti ou groupement politique']:
+    if ("-2019" in filepath or "-2020" in filepath) and not line['Parti ou groupement politique']:
         line['Parti ou groupement politique'] = line['Groupe']
         line['Groupe'] = ""
     results.append([

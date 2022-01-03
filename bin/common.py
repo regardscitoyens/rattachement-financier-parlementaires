@@ -68,6 +68,8 @@ def find_parl(nom, prenom, groupe, parls, silent=False, senat=False):
     return res[0]
 
 def unif_partis(p):
+    if not p.strip():
+        p = "Non rattaché"
     p = p.replace('et réalités', 'et Réalité')
     p = p.replace('Front national', 'Front National')
     p = p.replace('Rassemblement national', 'Rassemblement National')

@@ -73,6 +73,10 @@ elif "-Sénat-" in filepath:
         minfont = 2
         mint = 90
         maxt = 1150
+    elif "-2022" in filepath:
+        minfont = 2
+        mint = 90
+        maxt = 1150
 
 with open("cache/%ss.json" % typeparl, 'r') as f:
     parls = [p[typeparl] for p in json.load(f)['%ss' % typeparl]]
@@ -167,7 +171,7 @@ for line in (xml).split("\n"):
         record[3] = unif_partis(record[3])
         parl = find_parl(record[0], record[1], record[2], parls, senat="-Sénat-" in filepath)
         if parl:
-            if record[3] == "Aucun rattachement":
+            if record[3] in ["Aucun rattachement", "AUCUN PARTI"]:
                 record[3] = "Non rattaché"
                 if parl['sexe'] == 'F':
                     record[3] += "e"

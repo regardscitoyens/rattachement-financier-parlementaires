@@ -27,10 +27,11 @@ bin/complete_an.py pdfs/2101-AN-rattachement-2021.csv > data/2101-AN-rattachemen
 
 # PDF Sénat
 pdftohtml -xml pdfs/2012-Sénat-rattachement-2021.pdf > /dev/null
-bin/convert.py pdfs/2012-Sénat-rattachement-2021.xml 1
-bin/convert.py pdfs/2012-Sénat-rattachement-2021.xml > data/2012-Sénat-rattachement-2021.csv
+# the PDF is a scan for this year...
+#bin/convert.py pdfs/2012-Sénat-rattachement-2021.xml 1
+#bin/convert.py pdfs/2012-Sénat-rattachement-2021.xml > data/2012-Sénat-rattachement-2021.csv
 
 # Build SQLs for ND/NS
 bin/build_sql.sh data/2101-AN-rattachement-2021.csv
-bin/build_sql.sh data/2012-Sénat-rattachement-2021.csv
+#bin/build_sql.sh data/2012-Sénat-rattachement-2021.csv
 

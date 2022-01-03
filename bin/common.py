@@ -70,6 +70,25 @@ def find_parl(nom, prenom, groupe, parls, silent=False, senat=False):
 def unif_partis(p):
     if not p.strip():
         p = "Non rattaché"
+    for bad, good in [
+        ("ARCHIPEL DEMAIN", "Archipel Demain"),
+        ("CALÉDONIE ENSEMBLE", "Calédonie Ensemble"),
+        ("EUROPE ÉCOLOGIE LES VERTS", "Europe Écologie Les Verts"),
+        ("LA RÉPUBLIQUE EN MARCHE", "En marche !"),
+        ("LE RASSEMBLEMENT -LES RÉPUBLICAINS", "Le Rassemblement - Les Républicains"),
+        ("LES RÉPUBLICAINS", "Les Républicains"),
+        ("MOUVEMENT DÉMOCRATE", "Mouvement Démocrate"),
+        ("PARTI COMMUNISTE FRANÇAIS", "Parti communiste Français"),
+        ("PARTI PROGRESSISTE MARTINIQUAIS", "Parti progressiste Martiniquais"),
+        ("PARTI RADICAL DE GAUCHE", "Parti radical de gauche"),
+        ("PARTI SOCIALISTE", "Parti socialiste"),
+        ("RASSEMBLEMENT NATIONAL", "Rassemblement National"),
+        ("RÉGIONS ET PEUPLES SOLIDAIRES", "Régions et peuples solidaires"),
+        ("UNION DES DÉMOCRATES, RADICAUX ET LIBÉRAUX", "Union des démocrates, radicaux et libéraux"),
+        ("TAPURA HUIRAATIRA", "Tapura Huiraatira")
+    ]:
+        if p == bad:
+            return good
     p = p.replace('et réalités', 'et Réalité')
     p = p.replace('Front national', 'Front National')
     p = p.replace('Rassemblement national', 'Rassemblement National')
